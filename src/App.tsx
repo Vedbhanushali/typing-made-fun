@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import "./App.css";
+import { Button } from "@/components/ui/button";
 
 function App() {
   const [startApplication, setStartApplication] = useState(false);
@@ -32,6 +33,7 @@ function App() {
         onChange={toggleStartApplication}
         checked={startApplication}
       />
+      <Button>Click me</Button>
     </div>
   );
 }
