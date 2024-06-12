@@ -1,1 +1,21 @@
 # Typing Made Fun
+
+Plays relaxing sound based on selected music theme triggered on typing.
+
+## Install as an extension from source
+
+1. Download the latest available version and unarchive to your preferred location (whichever suits you).
+2. Go to root folder of project run following code
+
+    ```cmd
+    npm install
+    npm run build
+    ```
+
+3. Using Google Chrome browser, navigate to ```chrome://extensions/``` and enable "Developer mode" in the upper right corner.
+4. Click on the **Load unpacked extension...** button.
+5. Browse to the src directory of the project and select dist repository.
+
+## License
+
+This work is licensed under an MIT License.
