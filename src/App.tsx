@@ -28,7 +28,6 @@ function App() {
   useEffect(() => {
     chrome.storage.local.get("startClicked", (data) => {
       if (data.startClicked) {
-        // console.log(data.startClicked, "value from storage");
         setStartApplication(data.startClicked || false);
       }
     });
@@ -36,33 +35,32 @@ function App() {
 
   const toggleStartApplication = () => {
     const newValue = !startApplication;
-    // console.log("initial value", startApplication);
     setStartApplication(newValue);
-    // console.log(newValue, "setting in storage");
-    chrome.storage.local.set({ startClicked: newValue }, () => {
-      // console.log("Start button was clicked");
-    });
+    chrome.storage.local.set({ startClicked: newValue }, () => {});
   };
 
   return (
     <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
-      <Card className="w-[350px]">
-        <CardFooter className="justify-between m-3">
+      <Card className="w-[350px] mx-auto">
+        <CardFooter className="justify-between mt-4 mb-6 ml-3 mr-3">
           <CardTitle className="space-y-1">Typing made fun</CardTitle>
-          <ModeToggle />
+          <div className="flex items-center">
+            <div className="p-3">
+              <Switch
+                onCheckedChange={toggleStartApplication}
+                checked={startApplication}
+              />
+            </div>
+            <ModeToggle />
+          </div>
         </CardFooter>
         <CardContent>
-          <div className="flex items-center space-x-2">
-            <Switch
-              id="airplane-mode"
-              onCheckedChange={toggleStartApplication}
-              checked={startApplication}
-            />
-            <label>Start Application</label>
-          </div>
+          <p className="leading-7 [&:not(:first-child)]:mt-6">
+            words per minute - 23
+          </p>
         </CardContent>
-        <CardFooter className="flex justify-between">
-          {/* advance button */}
+        <CardFooter className="flex justify-between p-3">
+          <Button variant="outline">Advance</Button>
           <Popover open={openCombobox} onOpenChange={setOpenCombobox}>
             <PopoverTrigger asChild>
               <Button
@@ -111,7 +109,7 @@ function App() {
             </PopoverContent>
           </Popover>
         </CardFooter>
-        <small className="flex justify-between text-sm font-medium leading-none">
+        <small className="flex justify-center items-center p-3 text-sm font-medium leading-none">
           @typing-made-fun
         </small>
       </Card>
