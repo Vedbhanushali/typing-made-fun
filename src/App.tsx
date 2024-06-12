@@ -43,7 +43,7 @@ function App() {
     <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
       <Card className="w-[350px] mx-auto">
         <CardFooter className="justify-between mt-4 mb-6 ml-3 mr-3">
-          <CardTitle className="space-y-1">Typing made fun</CardTitle>
+          <CardTitle className="space-y-1">Typing Made Fun</CardTitle>
           <div className="flex items-center">
             <div className="p-3">
               <Switch
@@ -55,7 +55,7 @@ function App() {
           </div>
         </CardFooter>
         <CardContent>
-          <p className="leading-7 [&:not(:first-child)]:mt-6">
+          <p className="leading-7 [&:not(:first-child)]:mt-6 text-primary">
             words per minute - 23
           </p>
         </CardContent>
@@ -77,10 +77,17 @@ function App() {
             </PopoverTrigger>
             <PopoverContent className="w-[200px] p-0">
               <Command>
-                <CommandInput placeholder="Search framework..." />
+                <CommandInput placeholder="Select music theme..." />
                 <CommandList>
-                  <CommandEmpty>No framework found.</CommandEmpty>
-                  <CommandGroup>
+                  <CommandEmpty>No theme found</CommandEmpty>
+                  <CommandGroup
+                    style={{
+                      maxHeight: "68px",
+                      overflowY: "auto",
+                      scrollbarWidth: "none",
+                      msOverflowStyle: "none",
+                    }}
+                  >
                     {themes.map((theme) => (
                       <CommandItem
                         key={theme.value}
