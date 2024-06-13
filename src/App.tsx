@@ -24,12 +24,14 @@ function App() {
   const [startApplication, setStartApplication] = useState(false);
   const [openCombobox, setOpenCombobox] = useState(false);
   const [selectedTheme, setSelectedTheme] = useState("");
-  console.log(startApplication, "startApplication value");
   useEffect(() => {
     chrome.storage.local.get("startClicked", (data) => {
       if (data.startClicked) {
         setStartApplication(data.startClicked || false);
       }
+    });
+    chrome.storage.local.get("theme", (data) => {
+      setSelectedTheme(data.theme || "");
     });
   }, []);
 
@@ -37,6 +39,10 @@ function App() {
     const newValue = !startApplication;
     setStartApplication(newValue);
     chrome.storage.local.set({ startClicked: newValue }, () => {});
+  };
+
+  const handleThemeChange = (theme: string) => {
+    chrome.storage.local.set({ theme }, () => {});
   };
 
   return (
@@ -97,6 +103,9 @@ function App() {
                             currentValue === selectedTheme ? "" : currentValue
                           );
                           setOpenCombobox(false);
+                          handleThemeChange(
+                            currentValue === selectedTheme ? "" : currentValue
+                          );
                         }}
                       >
                         <Check
@@ -128,7 +137,7 @@ export default App;
 
 const themes = [
   {
-    value: "mechanical-keyboard",
+    value: "mechanical_keyboard",
     label: "mechanical keyboard",
   },
   {
