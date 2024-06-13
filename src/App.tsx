@@ -144,8 +144,4 @@ const themes = [
     value: "typewritter",
     label: "typewritter",
   },
-  {
-    value: "animal",
-    label: "animal",
-  },
 ];

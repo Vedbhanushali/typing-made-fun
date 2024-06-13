@@ -16,33 +16,41 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
 function playSound(theme, key) {
     let baseURL = chrome.runtime.getURL("assets/sounds/")
 
-    const getRandomIndex = (min, max) => {
-        return Math.floor(Math.random() * (max - min + 1)) + min;
+    const getRandomIndex = (mini, maxi) => {
+        return Math.floor(Math.random() * (maxi - mini + 1)) + mini;
     }
 
-    const executeMechanicalKeyboard = () => {
-        baseURL += "mechanical_keyboard/"
+    const playMechanicalKeyboard = (mini, maxi) => {
+        baseURL += 'mechanical_keyboard/'
         if (key == ' ') {
             baseURL += "space.wav"
         }
         else if ('0' <= key && key <= '9') {
-            baseURL += `numpad/${getRandomIndex(0, 3)}.wav`
+            baseURL += `numpad/${getRandomIndex(mini, maxi)}.wav`
         } else {
-            baseURL += `alphabets/${getRandomIndex(0, 3)}.wav`
+            baseURL += `alphabets/${getRandomIndex(mini, maxi)}.wav`
+        }
+    }
+
+    const playTypewritter = (mini, maxi) => {
+        baseURL += `typewritter/`
+        if (key == ' ') {
+            baseURL += "space.wav"
+        } else {
+            baseURL += `${getRandomIndex(mini, maxi)}.wav`
         }
     }
 
     switch (theme) {
         case "mechanical_keyboard":
-            executeMechanicalKeyboard()
+            playMechanicalKeyboard(0, 3)
             break;
-        case "typewriter":
-            break;
-        case "animal":
+        case "typewritter":
+            playTypewritter(0, 4)
             break;
         default:
             //default mechanical keyboard
-            executeMechanicalKeyboard()
+            playMechanicalKeyboard(0, 3)
     }
     new Audio(baseURL).play();
 }
