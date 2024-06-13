@@ -19,20 +19,33 @@ import { ModeToggle } from "@/components/mode-toggle";
 import { Switch } from "@/components/ui/switch";
 import { Check, ChevronsUpDown } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { Badge } from "./components/ui/badge";
 
 function App() {
   const [startApplication, setStartApplication] = useState(false);
   const [openCombobox, setOpenCombobox] = useState(false);
   const [selectedTheme, setSelectedTheme] = useState("");
+  const [wpm, setWpm] = useState(0);
+  const [accuracy, setAccuracy] = useState(0);
+
   useEffect(() => {
-    chrome.storage.local.get("startClicked", (data) => {
-      if (data.startClicked) {
-        setStartApplication(data.startClicked || false);
+    chrome.storage.local.get(
+      ["startClicked", "theme", "wpm", "accuracy"],
+      (data) => {
+        if (data.startClicked) {
+          setStartApplication(data.startClicked);
+        }
+        if (data.theme) {
+          setSelectedTheme(data.theme);
+        }
+        if (data.wpm) {
+          setWpm(data.wpm);
+        }
+        if (data.accuracy) {
+          setAccuracy(data.accuracy);
+        }
       }
-    });
-    chrome.storage.local.get("theme", (data) => {
-      setSelectedTheme(data.theme || "");
-    });
+    );
   }, []);
 
   const toggleStartApplication = () => {
@@ -60,10 +73,9 @@ function App() {
             <ModeToggle />
           </div>
         </CardFooter>
-        <CardContent>
-          <p className="leading-7 [&:not(:first-child)]:mt-6 text-primary">
-            words per minute - 23
-          </p>
+        <CardContent className="flex items-center justify-between">
+          <Badge>WPM : {wpm}</Badge>
+          <Badge>Accuracy : {accuracy}%</Badge>
         </CardContent>
         <CardFooter className="flex justify-between p-3">
           <Button variant="outline">Advance</Button>
