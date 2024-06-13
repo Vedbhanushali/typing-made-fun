@@ -61,7 +61,7 @@ function App() {
   return (
     <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
       <Card className="w-[350px] mx-auto">
-        <CardFooter className="justify-between mt-4 mb-6 ml-3 mr-3">
+        <CardFooter className="justify-between mt-4 mb-4 ml-4 mr-3">
           <CardTitle className="space-y-1">Typing Made Fun</CardTitle>
           <div className="flex items-center">
             <div className="p-3">
