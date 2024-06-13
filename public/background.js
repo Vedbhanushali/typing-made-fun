@@ -45,7 +45,13 @@ function playSound(theme, key) {
         }
         else if ('0' <= key && key <= '9') {
             baseURL += `numpad/${getRandomIndex(mini, maxi)}.wav`
-        } else {
+        }
+        else if (key == 'Enter') {
+            baseURL += "enter.wav"
+        } else if (key == 'Backspace') {
+            baseURL += "backspace.wav"
+        }
+        else {
             baseURL += `alphabets/${getRandomIndex(mini, maxi)}.wav`
         }
     }
@@ -54,7 +60,12 @@ function playSound(theme, key) {
         baseURL += `typewritter/`
         if (key == ' ') {
             baseURL += "space.wav"
-        } else {
+        } else if (key == 'Enter') {
+            baseURL += "enter.wav"
+        } else if (key == 'Backspace') {
+            baseURL += "backspace.wav"
+        }
+        else {
             baseURL += `${getRandomIndex(mini, maxi)}.wav`
         }
     }
@@ -64,7 +75,7 @@ function playSound(theme, key) {
             playMechanicalKeyboard(0, 3)
             break;
         case "typewritter":
-            playTypewritter(0, 4)
+            playTypewritter(0, 3)
             break;
         default:
             //default mechanical keyboard

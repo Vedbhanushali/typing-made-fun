@@ -77,8 +77,8 @@ function App() {
           <Badge>WPM : {wpm}</Badge>
           <Badge>Accuracy : {accuracy}%</Badge>
         </CardContent>
-        <CardFooter className="flex justify-between p-3">
-          <Button variant="outline">Advance</Button>
+        <CardFooter className="flex justify-center p-3">
+          {/* <Button variant="outline">Advance</Button> */}
           <Popover open={openCombobox} onOpenChange={setOpenCombobox}>
             <PopoverTrigger asChild>
               <Button
