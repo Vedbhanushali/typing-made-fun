@@ -56,8 +56,8 @@ function playSound(theme, key) {
         }
     }
 
-    const playTypewritter = (mini, maxi) => {
-        baseURL += `typewritter/`
+    const playTypewriter = (mini, maxi) => {
+        baseURL += `typewriter/`
         if (key == ' ') {
             baseURL += "space.wav"
         } else if (key == 'Enter') {
@@ -74,8 +74,8 @@ function playSound(theme, key) {
         case "mechanical_keyboard":
             playMechanicalKeyboard(0, 3)
             break;
-        case "typewritter":
-            playTypewritter(0, 3)
+        case "typewriter":
+            playTypewriter(0, 3)
             break;
         default:
             //default mechanical keyboard

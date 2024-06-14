@@ -26,26 +26,23 @@ function App() {
   const [openCombobox, setOpenCombobox] = useState(false);
   const [selectedTheme, setSelectedTheme] = useState("");
   const [wpm, setWpm] = useState(0);
-  const [accuracy, setAccuracy] = useState(0);
+  // const [accuracy, setAccuracy] = useState(0);
 
   useEffect(() => {
-    chrome.storage.local.get(
-      ["startClicked", "theme", "wpm", "accuracy"],
-      (data) => {
-        if (data.startClicked) {
-          setStartApplication(data.startClicked);
-        }
-        if (data.theme) {
-          setSelectedTheme(data.theme);
-        }
-        if (data.wpm) {
-          setWpm(data.wpm);
-        }
-        if (data.accuracy) {
-          setAccuracy(data.accuracy);
-        }
+    chrome.storage.local.get(["startClicked", "theme", "wpm"], (data) => {
+      if (data.startClicked) {
+        setStartApplication(data.startClicked);
       }
-    );
+      if (data.theme) {
+        setSelectedTheme(data.theme);
+      }
+      if (data.wpm) {
+        setWpm(data.wpm);
+      }
+      // if (data.accuracy) {
+      //   setAccuracy(data.accuracy);
+      // }
+    });
   }, []);
 
   const toggleStartApplication = () => {
@@ -73,9 +70,9 @@ function App() {
             <ModeToggle />
           </div>
         </CardFooter>
-        <CardContent className="flex items-center justify-between">
+        <CardContent className="flex justify-center">
           <Badge>WPM : {wpm}</Badge>
-          <Badge>Accuracy : {accuracy}%</Badge>
+          {/* <Badge>Accuracy : {accuracy}%</Badge> */}
         </CardContent>
         <CardFooter className="flex justify-center p-3">
           {/* <Button variant="outline">Advance</Button> */}
@@ -137,9 +134,9 @@ function App() {
             </PopoverContent>
           </Popover>
         </CardFooter>
-        <small className="flex justify-center items-center p-3 text-sm font-medium leading-none">
+        {/* <small className="flex justify-center items-center p-3 text-sm font-medium leading-none">
           @typing-made-fun
-        </small>
+        </small> */}
       </Card>
     </ThemeProvider>
   );
@@ -153,7 +150,7 @@ const themes = [
     label: "mechanical keyboard",
   },
   {
-    value: "typewritter",
-    label: "typewritter",
+    value: "typewriter",
+    label: "typewriter",
   },
 ];
