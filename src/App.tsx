@@ -19,30 +19,39 @@ import { ModeToggle } from "@/components/mode-toggle";
 import { Switch } from "@/components/ui/switch";
 import { Check, ChevronsUpDown } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { Badge } from "./components/ui/badge";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "./components/ui/tooltip";
+import { TooltipArrow } from "@radix-ui/react-tooltip";
 
 function App() {
   const [startApplication, setStartApplication] = useState(false);
   const [openCombobox, setOpenCombobox] = useState(false);
   const [selectedTheme, setSelectedTheme] = useState("");
   const [wpm, setWpm] = useState(0);
-  // const [accuracy, setAccuracy] = useState(0);
+  const [accuracy, setAccuracy] = useState(0);
 
   useEffect(() => {
-    chrome.storage.local.get(["startClicked", "theme", "wpm"], (data) => {
-      if (data.startClicked) {
-        setStartApplication(data.startClicked);
+    chrome.storage.local.get(
+      ["startClicked", "theme", "wpm", "accuracy"],
+      (data) => {
+        if (data.startClicked) {
+          setStartApplication(data.startClicked);
+        }
+        if (data.theme) {
+          setSelectedTheme(data.theme);
+        }
+        if (data.wpm) {
+          setWpm(data.wpm);
+        }
+        if (data.accuracy) {
+          setAccuracy(data.accuracy);
+        }
       }
-      if (data.theme) {
-        setSelectedTheme(data.theme);
-      }
-      if (data.wpm) {
-        setWpm(data.wpm);
-      }
-      // if (data.accuracy) {
-      //   setAccuracy(data.accuracy);
-      // }
-    });
+    );
   }, []);
 
   const toggleStartApplication = () => {
@@ -70,12 +79,38 @@ function App() {
             <ModeToggle />
           </div>
         </CardFooter>
-        <CardContent className="flex justify-center">
-          <Badge>WPM : {wpm}</Badge>
-          {/* <Badge>Accuracy : {accuracy}%</Badge> */}
+        <CardContent
+          className={`flex ${
+            accuracy != 0 ? "justify-between" : "justify-center"
+          } px-8`}
+        >
+          <TooltipProvider>
+            <Tooltip delayDuration={0}>
+              <TooltipTrigger asChild>
+                <Button size={"sm"}>WPM : {wpm}</Button>
+              </TooltipTrigger>
+              <TooltipContent>
+                <TooltipArrow />
+                <p>Word per minute</p>
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
+
+          {accuracy != 0 && (
+            <TooltipProvider>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <Button size={"sm"}>Accuracy : {accuracy}%</Button>
+                </TooltipTrigger>
+                <TooltipContent>
+                  <p>Accuracy from typing test</p>
+                </TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
+          )}
         </CardContent>
-        <CardFooter className="flex justify-center p-3">
-          {/* <Button variant="outline">Advance</Button> */}
+        <CardFooter className="flex justify-between px-3 pt-2">
+          <Button variant="outline">Advance</Button>
           <Popover open={openCombobox} onOpenChange={setOpenCombobox}>
             <PopoverTrigger asChild>
               <Button
@@ -134,9 +169,9 @@ function App() {
             </PopoverContent>
           </Popover>
         </CardFooter>
-        {/* <small className="flex justify-center items-center p-3 text-sm font-medium leading-none">
-          @typing-made-fun
-        </small> */}
+        <small className="flex justify-center items-center p-3 text-sm font-medium leading-none">
+          © 2024 typing made fun. All rights reserved.
+        </small>
       </Card>
     </ThemeProvider>
   );
@@ -152,5 +187,9 @@ const themes = [
   {
     value: "typewriter",
     label: "typewriter",
+  },
+  {
+    value: "chess",
+    label: "chess",
   },
 ];
