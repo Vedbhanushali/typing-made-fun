@@ -109,7 +109,7 @@ function App() {
             </TooltipProvider>
           )}
         </CardContent>
-        <CardFooter className="flex justify-between px-3 pt-2">
+        <CardFooter className="flex justify-between px-3 pt-2 pb-4">
           <Button variant="outline">Advance</Button>
           <Popover open={openCombobox} onOpenChange={setOpenCombobox}>
             <PopoverTrigger asChild>
@@ -169,9 +169,9 @@ function App() {
             </PopoverContent>
           </Popover>
         </CardFooter>
-        <small className="flex justify-center items-center p-3 text-sm font-medium leading-none">
+        {/* <small className="flex justify-center items-center p-3 text-sm font-medium leading-none">
           © 2024 typing made fun. All rights reserved.
-        </small>
+        </small> */}
       </Card>
     </ThemeProvider>
   );
@@ -191,5 +191,9 @@ const themes = [
   {
     value: "chess",
     label: "chess",
+  },
+  {
+    value: "numpad",
+    label: "numpad",
   },
 ];

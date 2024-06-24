@@ -21,7 +21,7 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
                 chrome.storage.local.set({ wpm: Math.round(wpm) });
                 //calculating accuracy
                 let accuracy = 100 - (backSpaceCount / keyPressCount) * 100;
-                chrome.storage.local.set({ accuracy: Math.round(accuracy) });
+                // chrome.storage.local.set({ accuracy: Math.round(accuracy) });
             } //else application not started
         });
     }
@@ -31,6 +31,7 @@ function isValidKey(key) {
     // numeric , alphabets case insensitive
     return key.match(/^[a-z0-9]$/i);
 }
+
 function playSound(theme, key) {
     let baseURL = chrome.runtime.getURL("assets/sounds/")
 
@@ -38,26 +39,8 @@ function playSound(theme, key) {
         return Math.floor(Math.random() * (maxi - mini + 1)) + mini;
     }
 
-    const playMechanicalKeyboard = (mini, maxi) => {
-        baseURL += 'mechanical_keyboard/'
-        if (key == ' ') {
-            baseURL += "space.wav"
-        }
-        else if ('0' <= key && key <= '9') {
-            baseURL += `numpad/${getRandomIndex(mini, maxi)}.wav`
-        }
-        else if (key == 'Enter') {
-            baseURL += "enter.wav"
-        } else if (key == 'Backspace') {
-            baseURL += "backspace.wav"
-        }
-        else {
-            baseURL += `alphabets/${getRandomIndex(mini, maxi)}.wav`
-        }
-    }
-
-    const playTypewriter = (mini, maxi) => {
-        baseURL += `typewriter/`
+    const playTheme = (mini, maxi) => {
+        baseURL += `${theme}/`
         if (key == ' ') {
             baseURL += "space.wav"
         } else if (key == 'Enter') {
@@ -72,14 +55,21 @@ function playSound(theme, key) {
 
     switch (theme) {
         case "mechanical_keyboard":
-            playMechanicalKeyboard(0, 3)
+            playTheme(0, 3)
             break;
         case "typewriter":
-            playTypewriter(0, 3)
+            playTheme(0, 3)
+            break;
+        case "numpad":
+            playTheme(0, 3)
+            break;
+        case "chess":
+            playTheme(0, 2)
             break;
         default:
             //default mechanical keyboard
-            playMechanicalKeyboard(0, 3)
+            theme = 'mechanical_keyboard'
+            playTheme(0, 3)
     }
     new Audio(baseURL).play();
 }

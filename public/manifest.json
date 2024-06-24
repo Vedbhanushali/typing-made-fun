@@ -21,12 +21,12 @@
   "permissions": ["storage", "scripting"],
   "host_permissions": ["https://*/*", "http://*/*"],
   "background": {
-    "service_worker": "background.js",
+    "service_worker": "background.min.js",
     "type": "module"
   },
   "content_scripts": [
     {
-      "js": ["content.js"],
+      "js": ["content.min.js"],
       "matches": ["<all_urls>"],
       "run_at": "document_idle"
     }
