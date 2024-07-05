@@ -109,8 +109,8 @@ function App() {
             </TooltipProvider>
           )}
         </CardContent>
-        <CardFooter className="flex justify-between px-3 pt-2 pb-4">
-          <Button variant="outline">Advance</Button>
+        <CardFooter className="flex justify-center px-3 pt-2 pb-4">
+          {/* <Button variant="outline">Advance</Button> */}
           <Popover open={openCombobox} onOpenChange={setOpenCombobox}>
             <PopoverTrigger asChild>
               <Button
