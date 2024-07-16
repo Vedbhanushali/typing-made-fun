@@ -1,37 +1,31 @@
 import { Menu } from "lucide-react";
-
 import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+import DashBoard from "./Dashboard";
+import TypingTest from "./TypingTest";
+import AboutMe from "./AboutMe";
+import BlockList from "./BlockList";
 
 const sideBarMenu = [
   {
     title: "Dashboard",
-    link: "#",
+    link: "?tab=dashboard",
   },
   {
     title: "Typing Test",
-    link: "#",
+    link: "?tab=typing-test",
   },
   {
     title: "Block List",
-    link: "#",
+    link: "?tab=block-list",
   },
   {
     title: "About Me",
-    link: "#",
+    link: "?tab=about-me",
   },
 ];
 
 export default function DashboardLayout({ tab }: { tab: string }) {
-  console.log(tab);
   return (
     <div className="flex min-h-screen w-full flex-col">
       <header className="sticky top-0 flex h-16 items-center gap-4 border-b bg-background px-4 md:px-6">
@@ -78,49 +72,10 @@ export default function DashboardLayout({ tab }: { tab: string }) {
             </div>
           </nav>
           <div className="grid gap-6">
-            <Card x-chunk="dashboard-04-chunk-1">
-              <CardHeader>
-                <CardTitle>Store Name</CardTitle>
-                <CardDescription>
-                  Used to identify your store in the marketplace.
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <h1>Test</h1>
-              </CardContent>
-              <CardFooter className="border-t px-6 py-4">
-                <Button>Save</Button>
-              </CardFooter>
-            </Card>
-            <Card x-chunk="dashboard-04-chunk-2">
-              <CardHeader>
-                <CardTitle>Plugins Directory</CardTitle>
-                <CardDescription>
-                  The directory within your project, in which your plugins are
-                  located.
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <form className="flex flex-col gap-4">
-                  {/* <Input
-                    placeholder="Project Name"
-                    defaultValue="/content/plugins"
-                  /> */}
-                  <div className="flex items-center space-x-2">
-                    {/* <Checkbox id="include" defaultChecked /> */}
-                    <label
-                      htmlFor="include"
-                      className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-                    >
-                      Allow administrators to change the directory.
-                    </label>
-                  </div>
-                </form>
-              </CardContent>
-              <CardFooter className="border-t px-6 py-4">
-                <Button>Save</Button>
-              </CardFooter>
-            </Card>
+            {tab === "dashboard" && <DashBoard />}
+            {tab === "typing-test" && <TypingTest />}
+            {tab === "block-list" && <BlockList />}
+            {tab === "about-me" && <AboutMe />}
           </div>
         </div>
       </main>

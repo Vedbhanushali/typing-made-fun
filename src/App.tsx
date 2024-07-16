@@ -57,7 +57,7 @@ function App() {
     const queryString = window.location.search;
     const urlParams = new URLSearchParams(queryString);
     const _tab = urlParams.get("tab");
-    setTab(_tab || "");
+    setTab(_tab || "popup");
   }, []);
 
   const toggleStartApplication = () => {
@@ -70,7 +70,8 @@ function App() {
     chrome.storage.local.set({ theme }, () => {});
   };
 
-  if (!tab)
+  if (!tab) return null;
+  if (tab == "popup")
     return (
       <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
         <Card className="w-[350px] mx-auto">
