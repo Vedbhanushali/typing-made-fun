@@ -42,21 +42,18 @@ export default function DashboardLayout({ tab }: { tab: string }) {
           </SheetTrigger>
           <SheetContent side="left">
             <nav className="grid gap-6 text-lg font-medium">
-              <h3 className="text-foreground text-2xl font-semibold tracking-tight">
+              <h3 className="text-foreground hover:text-primary text-2xl font-semibold tracking-tight">
                 Typing Made Fun
               </h3>
               {sideBarMenu.map((s) => (
-                <a
-                  href={s.link}
-                  className="text-muted-foreground hover:text-foreground"
-                >
+                <a href={s.link} className="text-foreground hover:text-primary">
                   {s.title}
                 </a>
               ))}
             </nav>
           </SheetContent>
         </Sheet>
-        <h3 className="text-foreground text-2xl font-semibold tracking-tight">
+        <h3 className="text-foreground hover:text-primary text-2xl font-semibold tracking-tight">
           Typing Made Fun
         </h3>
       </header>
@@ -65,7 +62,10 @@ export default function DashboardLayout({ tab }: { tab: string }) {
           <nav className="hidden md:block" x-chunk="dashboard-04-chunk-0">
             <div className="grid gap-4 text-sm text-muted-foreground">
               {sideBarMenu.map((s) => (
-                <a href={s.link} className="font-semibold text-primary">
+                <a
+                  href={s.link}
+                  className="font-semibold text-foreground hover:text-primary"
+                >
                   {s.title}
                 </a>
               ))}
