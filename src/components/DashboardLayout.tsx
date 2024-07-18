@@ -1,10 +1,11 @@
+import React, { Suspense } from "react";
 import { Menu } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
-import DashBoard from "./Dashboard";
-import TypingTest from "./TypingTest";
-import AboutMe from "./AboutMe";
-import BlockList from "./BlockList";
+const DashBoard = React.lazy(() => import("./Dashboard"));
+const TypingTest = React.lazy(() => import("./TypingTest"));
+const AboutMe = React.lazy(() => import("./AboutMe"));
+const BlockList = React.lazy(() => import("./BlockList"));
 
 const sideBarMenu = [
   {
@@ -72,10 +73,26 @@ export default function DashboardLayout({ tab }: { tab: string }) {
             </div>
           </nav>
           <div className="grid gap-6">
-            {tab === "dashboard" && <DashBoard />}
-            {tab === "typing-test" && <TypingTest />}
-            {tab === "block-list" && <BlockList />}
-            {tab === "about-me" && <AboutMe />}
+            {tab === "dashboard" && (
+              <Suspense fallback={<div>Loading...</div>}>
+                <DashBoard />
+              </Suspense>
+            )}
+            {tab === "typing-test" && (
+              <Suspense fallback={<div>Loading...</div>}>
+                <TypingTest />
+              </Suspense>
+            )}
+            {tab === "block-list" && (
+              <Suspense fallback={<div>Loading...</div>}>
+                <BlockList />
+              </Suspense>
+            )}
+            {tab === "about-me" && (
+              <Suspense fallback={<div>Loading...</div>}>
+                <AboutMe />
+              </Suspense>
+            )}
           </div>
         </div>
       </main>
