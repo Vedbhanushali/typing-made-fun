@@ -2,6 +2,13 @@ import React, { Suspense } from "react";
 import { Menu } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "./ui/card";
 const DashBoard = React.lazy(() => import("./Dashboard"));
 const TypingTest = React.lazy(() => import("./TypingTest"));
 const AboutMe = React.lazy(() => import("./AboutMe"));
@@ -58,9 +65,12 @@ export default function DashboardLayout({ tab }: { tab: string }) {
           Typing Made Fun
         </h3>
       </header>
-      <main className="flex min-h-[calc(100vh_-_theme(spacing.16))] flex-1 flex-col gap-4 bg-background p-4 md:gap-8 md:p-10">
-        <div className="mx-auto grid w-full max-w-6xl items-start gap-6 md:grid-cols-[180px_1fr] lg:grid-cols-[250px_1fr]">
-          <nav className="hidden md:block" x-chunk="dashboard-04-chunk-0">
+      <main className="flex min-h-[calc(100vh_-_theme(spacing.16))] gap-4 bg-background p-4 md:gap-8 md:p-10">
+        <div className="mx-auto grid w-full max-w-8xl items-start gap-6 md:grid-cols-[180px_1fr] lg:grid-cols-[250px_1fr]">
+          <nav
+            className="hidden md:flex flex-col justify-between h-full max-h-screen gap-2"
+            x-chunk="dashboard-04-chunk-0"
+          >
             <div className="grid gap-4 text-sm text-muted-foreground">
               {sideBarMenu.map((s) => (
                 <a
@@ -70,6 +80,30 @@ export default function DashboardLayout({ tab }: { tab: string }) {
                   {s.title}
                 </a>
               ))}
+            </div>
+            <div className="pr-4">
+              <Card x-chunk="dashboard-02-chunk-0">
+                <CardHeader className="p-2 pt-0 md:p-4">
+                  <CardTitle>Feedback</CardTitle>
+                  <CardDescription>
+                    Leave your feedback or report an issue of this Open source
+                    Project on GitHub.
+                  </CardDescription>
+                </CardHeader>
+                <CardContent className="p-2 pt-0 md:p-4 md:pt-0">
+                  <Button
+                    size="sm"
+                    className="w-full"
+                    onClick={() => {
+                      chrome.tabs.create({
+                        url: "https://github.com/Vedbhanushali/typing-made-fun",
+                      });
+                    }}
+                  >
+                    Github
+                  </Button>
+                </CardContent>
+              </Card>
             </div>
           </nav>
           <div className="grid gap-6">
