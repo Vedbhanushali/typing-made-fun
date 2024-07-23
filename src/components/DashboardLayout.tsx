@@ -82,7 +82,7 @@ export default function DashboardLayout({ tab }: { tab: string }) {
               ))}
             </div>
             <div className="pr-4">
-              <Card x-chunk="dashboard-02-chunk-0">
+              <Card x-chunk="dashboard-02-chunk-0" className="rounded-md">
                 <CardHeader className="p-2 pt-0 md:p-4">
                   <CardTitle>Feedback</CardTitle>
                   <CardDescription>
@@ -92,7 +92,7 @@ export default function DashboardLayout({ tab }: { tab: string }) {
                 </CardHeader>
                 <CardContent className="p-2 pt-0 md:p-4 md:pt-0">
                   <Button
-                    size="sm"
+                    size="default"
                     className="w-full"
                     onClick={() => {
                       chrome.tabs.create({
