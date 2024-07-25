@@ -106,28 +106,26 @@ export default function DashboardLayout({ tab }: { tab: string }) {
               </Card>
             </div>
           </nav>
-          <div className="grid gap-6">
-            {tab === "dashboard" && (
-              <Suspense fallback={<div>Loading...</div>}>
-                <DashBoard />
-              </Suspense>
-            )}
-            {tab === "typing-test" && (
-              <Suspense fallback={<div>Loading...</div>}>
-                <TypingTest />
-              </Suspense>
-            )}
-            {tab === "block-list" && (
-              <Suspense fallback={<div>Loading...</div>}>
-                <BlockList />
-              </Suspense>
-            )}
-            {tab === "about-me" && (
-              <Suspense fallback={<div>Loading...</div>}>
-                <AboutMe />
-              </Suspense>
-            )}
-          </div>
+          {tab === "dashboard" && (
+            <Suspense fallback={<div>Loading...</div>}>
+              <DashBoard />
+            </Suspense>
+          )}
+          {tab === "typing-test" && (
+            <Suspense fallback={<div>Loading...</div>}>
+              <TypingTest />
+            </Suspense>
+          )}
+          {tab === "block-list" && (
+            <Suspense fallback={<div>Loading...</div>}>
+              <BlockList />
+            </Suspense>
+          )}
+          {tab === "about-me" && (
+            <Suspense fallback={<div>Loading...</div>}>
+              <AboutMe />
+            </Suspense>
+          )}
         </div>
       </main>
     </div>

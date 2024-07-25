@@ -30,6 +30,8 @@
     --chart-3: 216 92% 60%;
     --chart-4: 210 98% 78%;
     --chart-5: 212 97% 87%;
+    --untyped: 165 165% 165%;
+    --cursor-color: black;
   }
 
   .dark {
@@ -58,6 +60,8 @@
     --chart-3: 216 92% 60%;
     --chart-4: 210 98% 78%;
     --chart-5: 212 97% 87%;
+    --untyped: 0 0% 45%;
+    --cursor-color: white;
   }
 }
 
@@ -67,4 +71,24 @@
 
 .CommandGroup::-webkit-scrollbar {
   display: none; /* For Chrome, Safari and Opera */
+}
+
+@keyframes blink {
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+.blinking-cursor {
+  display: inline-block;
+  width: 1px;
+  height: 1em;
+  background-color: var(--cursor-color);
+  animation: blink 1s step-end infinite;
 }
