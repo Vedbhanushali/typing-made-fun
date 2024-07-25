@@ -20,32 +20,18 @@ export default function TypingTest() {
       <Card className="sm:col-span-2" x-chunk="dashboard-05-chunk-0">
         <CardHeader className="pb-3">
           <CardDescription className="max-w-lg text-balance leading-relaxed">
-            <span className="text-primary-foreground">
+            <span className="text-foreground">
               {card[currentCard]
                 .split("")
                 .filter((x, index) => index < cursorPosition)
                 .map((char) => char)}
             </span>
-            <span className="text-secondary-foreground">
+            <span className="text-secondary">
               {card[currentCard]
                 .split("")
                 .filter((char, index) => index >= cursorPosition)
                 .map((char) => char)}
             </span>
-            {/* {card.map((text, index) =>
-              index === cursorPosition ? (
-                <span
-                  key={index}
-                  style={{
-                    backgroundColor: "yellow",
-                  }}
-                >
-                  {char}
-                </span>
-              ) : (
-                char
-              )
-            )} */}
           </CardDescription>
         </CardHeader>
       </Card>
