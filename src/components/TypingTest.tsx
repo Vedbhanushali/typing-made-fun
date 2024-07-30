@@ -3,6 +3,7 @@ import {
   Card,
   CardContent,
   CardDescription,
+  CardFooter,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
@@ -16,42 +17,47 @@ const card = [
 ];
 
 export default function TypingTest() {
-  const [currentCard, setCurrentCard] = useState(2); // number of cards
-  const [cursorPosition, setCursorPosition] = useState(card[2].length - 2); // position of cursor in current card
+  const [currentCard, setCurrentCard] = useState(0);
+  const [cursorPosition, setCursorPosition] = useState(0); // position of cursor in current card
   const [testStatus, setTestStatus] = useState(0); //0: not started, 1: started, 2: ended
 
   useEffect(() => {
     const handleKeyPress = (event: KeyboardEvent) => {
       if (testStatus == 0 || testStatus == 2) return;
+
       const key = event.key;
-      if (currentCard >= card.length) return;
-      if (cursorPosition >= card[currentCard].length) return;
+      let relCursorPos = cursorPosition;
+      let relCurrentCard = currentCard;
 
       if (key == card[currentCard][cursorPosition]) {
         setCursorPosition(cursorPosition + 1);
+        relCursorPos += 1;
+      }
+
+      if (relCursorPos >= card[currentCard].length) {
+        setCurrentCard(currentCard + 1);
+        setCursorPosition(0);
+        relCurrentCard += 1;
+        relCursorPos = 0;
+      }
+
+      if (relCurrentCard >= card.length) {
+        setTestStatus(2);
+        return;
       }
     };
-    if (currentCard == card.length) {
-      setTestStatus(2);
-    }
-    if (cursorPosition >= card[currentCard].length) {
-      setCurrentCard(currentCard + 1);
-      setCursorPosition(0);
-    }
-    if (currentCard == card.length) {
-      setTestStatus(2);
-    }
     window.addEventListener("keydown", handleKeyPress);
     return () => {
+      console.log("old removed");
       window.removeEventListener("keydown", handleKeyPress);
     };
   }, [testStatus, currentCard, cursorPosition]);
+
   const renderTextWithCursor = () => {
     return (
       <Card className="sm:col-span-2" x-chunk="dashboard-05-chunk-0">
-        test
         <CardHeader>
-          <CardDescription className="max-w-lg text-balance leading-relaxed text-justify">
+          <CardDescription className="max-w-lg w-full font-mono text-balance leading-relaxed text-justify">
             <span className="text-foreground">
               {currentCard < card.length &&
                 card[currentCard]
@@ -145,24 +151,34 @@ export default function TypingTest() {
         </>
       )}
       {testStatus == 2 && (
-        <Card x-chunk="dashboard-02-chunk-0" className="rounded-md">
+        <Card x-chunk="dashboard-02-chunk-0" className="rounded-md w-[350px]">
           <CardHeader className="p-2 pt-0 md:p-4">
             <CardTitle>Typing Test Over</CardTitle>
           </CardHeader>
           <CardContent className="p-2 pt-0 md:p-4 md:pt-0">
-            Want to retry
+            Do you still want to continue ?
+          </CardContent>
+          <CardFooter className="flex justify-between px-4 py-4 pb-4">
             <Button
+              variant="outline"
               size="default"
-              className="w-full"
               onClick={() => {
-                setTestStatus(0);
+                setTestStatus(1);
                 setCurrentCard(0);
                 setCursorPosition(0);
               }}
             >
-              Retry
+              Continue
             </Button>
-          </CardContent>
+            <Button
+              size="default"
+              onClick={() => {
+                //local storage speed and accuracy storing
+              }}
+            >
+              End
+            </Button>
+          </CardFooter>
         </Card>
       )}
     </div>
