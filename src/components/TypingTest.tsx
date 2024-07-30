@@ -46,7 +46,6 @@ export default function TypingTest() {
       window.removeEventListener("keydown", handleKeyPress);
     };
   }, [testStatus, currentCard, cursorPosition]);
-  console.log(testStatus, currentCard, cursorPosition);
   const renderTextWithCursor = () => {
     return (
       <Card className="sm:col-span-2" x-chunk="dashboard-05-chunk-0">
