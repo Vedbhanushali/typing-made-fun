@@ -20,6 +20,8 @@ export default function TypingTest() {
   const [currentCard, setCurrentCard] = useState(0);
   const [cursorPosition, setCursorPosition] = useState(0); // position of cursor in current card
   const [testStatus, setTestStatus] = useState(0); //0: not started, 1: started, 2: ended
+  const [startTime, setStartTime] = useState<number | null>(null);
+  const [typedChar, setTypedChar] = useState<number>(0);
 
   useEffect(() => {
     let selectedTheme = "mechanical_keyboard"; //default theme
@@ -33,6 +35,7 @@ export default function TypingTest() {
       let relCurrentCard = currentCard;
 
       if (key == card[currentCard][cursorPosition]) {
+        setTypedChar(typedChar + 1);
         setCursorPosition(cursorPosition + 1);
         relCursorPos += 1;
       }
@@ -59,7 +62,7 @@ export default function TypingTest() {
     return () => {
       window.removeEventListener("keydown", handleKeyPress);
     };
-  }, [testStatus, currentCard, cursorPosition]);
+  }, [testStatus, typedChar, currentCard, cursorPosition]);
 
   const renderTextWithCursor = () => {
     return (
@@ -133,6 +136,7 @@ export default function TypingTest() {
                 className="w-full"
                 onClick={() => {
                   setTestStatus(1);
+                  setStartTime(Date.now());
                 }}
               >
                 Start
@@ -182,6 +186,50 @@ export default function TypingTest() {
               size="default"
               onClick={() => {
                 //local storage speed and accuracy storing
+                const endTime = Date.now();
+                const timeTakeninSec = (endTime - startTime!) / 1000;
+                const wpm = Math.round(typedChar / 5 / (timeTakeninSec / 60));
+
+                chrome.storage.local.get(["analysis"], (data) => {
+                  let analysis: {
+                    date: string;
+                    speed: number;
+                    accuracy: number;
+                  }[] = [];
+                  const currentDate = getCurrentDate();
+                  if (data.analysis) {
+                    analysis = data.analysis;
+                  }
+                  if (analysis.length > 0) {
+                    const lastAnalysis = analysis[analysis.length - 1];
+                    if (
+                      lastAnalysis.date == currentDate &&
+                      lastAnalysis.speed < wpm
+                    ) {
+                      //updating the last analysis if speed is better
+                      analysis.pop();
+                      analysis.push({
+                        date: currentDate,
+                        speed: wpm,
+                        accuracy: 0,
+                      });
+                    }
+                  } else {
+                    analysis.push({
+                      date: currentDate,
+                      speed: wpm,
+                      accuracy: 0,
+                    });
+                  }
+                  chrome.storage.local.set({ analysis }, () => {});
+                });
+
+                // reset
+                setTestStatus(0);
+                setCurrentCard(0);
+                setCursorPosition(0);
+                setStartTime(null);
+                setTypedChar(0);
               }}
             >
               End
@@ -232,4 +280,12 @@ function playSound(theme: string, key: string) {
       playTheme(0, 3);
   }
   new Audio(baseURL).play();
+}
+
+function getCurrentDate(): string {
+  const today = new Date();
+  const year = today.getFullYear();
+  const month = String(today.getMonth() + 1).padStart(2, "0"); // Months are 0-based
+  const day = String(today.getDate()).padStart(2, "0");
+  return `${year}-${month}-${day}`;
 }
