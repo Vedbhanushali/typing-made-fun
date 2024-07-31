@@ -33,27 +33,20 @@ function App() {
   const [openCombobox, setOpenCombobox] = useState(false);
   const [selectedTheme, setSelectedTheme] = useState("");
   const [wpm, setWpm] = useState(0);
-  const [accuracy, setAccuracy] = useState(0);
   const [tab, setTab] = useState<string>();
 
   useEffect(() => {
-    chrome.storage.local.get(
-      ["startClicked", "theme", "wpm", "accuracy"],
-      (data) => {
-        if (data.startClicked) {
-          setStartApplication(data.startClicked);
-        }
-        if (data.theme) {
-          setSelectedTheme(data.theme);
-        }
-        if (data.wpm) {
-          setWpm(data.wpm);
-        }
-        if (data.accuracy) {
-          setAccuracy(data.accuracy);
-        }
+    chrome.storage.local.get(["startClicked", "theme", "wpm"], (data) => {
+      if (data.startClicked) {
+        setStartApplication(data.startClicked);
       }
-    );
+      if (data.theme) {
+        setSelectedTheme(data.theme);
+      }
+      if (data.wpm) {
+        setWpm(data.wpm);
+      }
+    });
     const queryString = window.location.search;
     const urlParams = new URLSearchParams(queryString);
     const _tab = urlParams.get("tab");
@@ -87,11 +80,7 @@ function App() {
               <ModeToggle />
             </div>
           </CardFooter>
-          <CardContent
-            className={`flex ${
-              accuracy != 0 ? "justify-between" : "justify-center"
-            } px-8`}
-          >
+          <CardContent className="flex justify-center px-8">
             <TooltipProvider>
               <Tooltip delayDuration={0}>
                 <TooltipTrigger asChild>
@@ -103,19 +92,6 @@ function App() {
                 </TooltipContent>
               </Tooltip>
             </TooltipProvider>
-
-            {accuracy != 0 && (
-              <TooltipProvider>
-                <Tooltip>
-                  <TooltipTrigger asChild>
-                    <Button size={"sm"}>Accuracy : {accuracy}%</Button>
-                  </TooltipTrigger>
-                  <TooltipContent>
-                    <p>Accuracy from typing test</p>
-                  </TooltipContent>
-                </Tooltip>
-              </TooltipProvider>
-            )}
           </CardContent>
           <CardFooter className="flex justify-between px-3 pt-2 pb-4">
             <Button
