@@ -22,10 +22,13 @@ export default function TypingTest() {
   const [testStatus, setTestStatus] = useState(0); //0: not started, 1: started, 2: ended
 
   useEffect(() => {
+    let selectedTheme = "mechanical_keyboard"; //default theme
     const handleKeyPress = (event: KeyboardEvent) => {
       if (testStatus == 0 || testStatus == 2) return;
 
       const key = event.key;
+      playSound(selectedTheme, key);
+
       let relCursorPos = cursorPosition;
       let relCurrentCard = currentCard;
 
@@ -46,9 +49,14 @@ export default function TypingTest() {
         return;
       }
     };
+
+    chrome.storage.local.get(["theme"], (data) => {
+      if (data.theme) {
+        selectedTheme = data.theme;
+      }
+    });
     window.addEventListener("keydown", handleKeyPress);
     return () => {
-      console.log("old removed");
       window.removeEventListener("keydown", handleKeyPress);
     };
   }, [testStatus, currentCard, cursorPosition]);
@@ -183,4 +191,45 @@ export default function TypingTest() {
       )}
     </div>
   );
+}
+
+function playSound(theme: string, key: string) {
+  let baseURL = chrome.runtime.getURL("assets/sounds/");
+
+  const getRandomIndex = (mini: number, maxi: number) => {
+    return Math.floor(Math.random() * (maxi - mini + 1)) + mini;
+  };
+
+  const playTheme = (mini: number, maxi: number) => {
+    baseURL += `${theme}/`;
+    if (key == " ") {
+      baseURL += "space.wav";
+    } else if (key == "Enter") {
+      baseURL += "enter.wav";
+    } else if (key == "Backspace") {
+      baseURL += "backspace.wav";
+    } else {
+      baseURL += `${getRandomIndex(mini, maxi)}.wav`;
+    }
+  };
+
+  switch (theme) {
+    case "mechanical_keyboard":
+      playTheme(0, 3);
+      break;
+    case "typewriter":
+      playTheme(0, 3);
+      break;
+    case "numpad":
+      playTheme(0, 3);
+      break;
+    case "chess":
+      playTheme(0, 2);
+      break;
+    default:
+      //default mechanical keyboard
+      theme = "mechanical_keyboard";
+      playTheme(0, 3);
+  }
+  new Audio(baseURL).play();
 }
