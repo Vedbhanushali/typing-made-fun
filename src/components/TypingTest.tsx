@@ -21,8 +21,8 @@ export default function TypingTest() {
   const [cursorPosition, setCursorPosition] = useState(0); // position of cursor in current card
   const [testStatus, setTestStatus] = useState(0); //0: not started, 1: started, 2: ended
   const [startTime, setStartTime] = useState<number | null>(null);
-  const [typedChar, setTypedChar] = useState<number>(0);
-
+  const [correctTyped, setcorrectTyped] = useState<number>(0);
+  const [totalTypedChar, setTotalTypedChar] = useState<number>(0);
   useEffect(() => {
     let selectedTheme = "mechanical_keyboard"; //default theme
     const handleKeyPress = (event: KeyboardEvent) => {
@@ -34,8 +34,9 @@ export default function TypingTest() {
       let relCursorPos = cursorPosition;
       let relCurrentCard = currentCard;
 
+      if (isValidKey(key)) setTotalTypedChar(totalTypedChar + 1);
       if (key == card[currentCard][cursorPosition]) {
-        setTypedChar(typedChar + 1);
+        setcorrectTyped(correctTyped + 1);
         setCursorPosition(cursorPosition + 1);
         relCursorPos += 1;
       }
@@ -62,7 +63,7 @@ export default function TypingTest() {
     return () => {
       window.removeEventListener("keydown", handleKeyPress);
     };
-  }, [testStatus, typedChar, currentCard, cursorPosition]);
+  }, [testStatus, totalTypedChar, correctTyped, currentCard, cursorPosition]);
 
   const renderTextWithCursor = () => {
     return (
@@ -187,9 +188,14 @@ export default function TypingTest() {
               onClick={() => {
                 //local storage speed and accuracy storing
                 const endTime = Date.now();
-                const timeTakeninSec = (endTime - startTime!) / 1000;
-                const wpm = Math.round(typedChar / 5 / (timeTakeninSec / 60));
-
+                const timeTakenInSec = (endTime - startTime!) / 1000;
+                const speed = Math.round(
+                  correctTyped / 5 / (timeTakenInSec / 60)
+                );
+                const accuracy = calculateAccuracy(
+                  correctTyped,
+                  totalTypedChar
+                );
                 chrome.storage.local.get(["analysis"], (data) => {
                   let analysis: {
                     date: string;
@@ -202,25 +208,15 @@ export default function TypingTest() {
                   }
                   if (analysis.length > 0) {
                     const lastAnalysis = analysis[analysis.length - 1];
-                    if (
-                      lastAnalysis.date == currentDate &&
-                      lastAnalysis.speed < wpm
-                    ) {
-                      //updating the last analysis if speed is better
+                    if (lastAnalysis.date == currentDate) {
                       analysis.pop();
-                      analysis.push({
-                        date: currentDate,
-                        speed: wpm,
-                        accuracy: 0,
-                      });
                     }
-                  } else {
-                    analysis.push({
-                      date: currentDate,
-                      speed: wpm,
-                      accuracy: 0,
-                    });
                   }
+                  analysis.push({
+                    date: currentDate,
+                    speed,
+                    accuracy,
+                  });
                   chrome.storage.local.set({ analysis }, () => {});
                 });
 
@@ -229,7 +225,8 @@ export default function TypingTest() {
                 setCurrentCard(0);
                 setCursorPosition(0);
                 setStartTime(null);
-                setTypedChar(0);
+                setcorrectTyped(0);
+                setTotalTypedChar(0);
               }}
             >
               End
@@ -288,4 +285,13 @@ function getCurrentDate(): string {
   const month = String(today.getMonth() + 1).padStart(2, "0"); // Months are 0-based
   const day = String(today.getDate()).padStart(2, "0");
   return `${year}-${month}-${day}`;
+}
+
+function calculateAccuracy(correct: number, total: number): number {
+  return Math.round((correct / total) * 100);
+}
+
+function isValidKey(key: string) {
+  // numeric , alphabets case insensitive
+  return key.match(/^[a-z0-9 ,.]$/i);
 }
