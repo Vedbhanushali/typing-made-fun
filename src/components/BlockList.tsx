@@ -24,6 +24,12 @@ export default function BlockList() {
   };
   return (
     <div className="grid w-full gap-2">
+      <div className="text-center mb-4">
+        <h1 className="text-4xl text-foreground font-bold">Block list</h1>
+      </div>
+      <p className="text-foreground text-sm">
+        Enter the domains where you want to block sound effects.
+      </p>
       <Textarea
         placeholder="Enter Domain example -&#10;google.com&#10;youtube.com"
         className="text-foreground"
