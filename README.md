@@ -1,5 +1,7 @@
 # Typing Made Fun
 
+https://github.com/user-attachments/assets/d2743b7b-e847-4137-a9d3-c169b9ce9c37
+
 ![marq promo tile](https://github.com/user-attachments/assets/ae30d04b-eaa6-422d-9320-4b876451665a)
 
 ## Application Graphics
